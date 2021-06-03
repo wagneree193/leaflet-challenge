@@ -19,17 +19,30 @@ function chooseColor(depth) {
   }
 }
 
+function setRadius(mag) {
+  // eliminate zero values because we are doing a multiplication operation
+  if (mag === 0) {
+    return 1;
+  }
+
+  return mag * 3;
+}
+ 
 // get radius from the magnitude 
 
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function(mapData) {
   console.log(mapData);
+// make magnitude variable 
+var mag = mapData(feature.properties.mag);
+  console.log(mag);
+
   L.geoJson(mapData, {
     style: function(point) {
       return{
         color: "white",
         // call chooseColor function to decide which color to color the marker based on depth)
-        fillColor: chooseColor(point.coordinates[2]),
+        fillColor: chooseColor(feature.point.coordinates[2]),
         fillOpacity: 0.5,
         weight: 1.5
       };
