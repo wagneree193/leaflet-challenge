@@ -63,7 +63,7 @@ function setRadius(mag) {
 }
  
 // get radius from the magnitude
-
+  // make layer 
     function setStyle(feature) {
       return{
         color: "#000000",
@@ -74,32 +74,47 @@ function setRadius(mag) {
         stroke: true,
         weight: 1.5
       };
-    } 
-   });
+    }
+    // make layer
+    L.geoJson(mapData, {
+      pointToLayer: function(feature, latlng){
+        return L.circleMarker(latlng);
+      },
+      style: setStyle,
+      onEachFeature: function(feature, layer) {
+        layer.bindPopup("<h3>" + feature.properties.place +
+          "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+      }
+    }).addTo(myMap);
+  
   // var depth = data.map(data => data.geometry.point.coordinates[2])
   // console.log(depth)
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(mapData.features);
 
+});
 
 function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
-  function onEachFeature(feature, layer) {
-    layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
-  }
+  // function onEachFeature(feature, layer) {
+  //   layer.bindPopup("<h3>" + feature.properties.place +
+  //     "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+  // }
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
+  var earthquakes = 
+  L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature
   });
 
-  // Sending our earthquakes layer to the createMap function
+  // // Sending our earthquakes layer to the createMap function
+
   createMap(earthquakes);
 }
+
 function createMap(earthquakes) {
 
   // Define streetmap and darkmap layers
