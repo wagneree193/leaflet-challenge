@@ -34,25 +34,53 @@ function setRadius(mag) {
 d3.json(queryUrl).then(function(mapData) {
   console.log(mapData);
 // make magnitude variable 
-var mag = mapData(feature.properties.mag);
-  console.log(mag);
+// var mag = mapData(feature.properties.mag);
+  // console.log(mag);
+    // get color from the depth
+// using the mapping-web dat 2 activity 1 basic NYC Boroughs as example
+function chooseColor(depth) {
+  switch(depth){
+  case "0:10":
+    return "green";
+  case "11:20" :
+    return "yellow";
+  case "21:30" :
+    return "red";
+  case "31:50":
+    return "purple";
+  case "51:500":
+    return "gray";
+  }
+}
 
-  L.geoJson(mapData, {
-    style: function(point) {
+function setRadius(mag) {
+  // eliminate zero values because we are doing a multiplication operation
+  if (mag === 0) {
+    return 1;
+  }
+
+  return mag * 3;
+}
+ 
+// get radius from the magnitude
+
+    function setStyle(feature) {
       return{
-        color: "white",
+        color: "#000000",
         // call chooseColor function to decide which color to color the marker based on depth)
-        fillColor: chooseColor(feature.point.coordinates[2]),
+        fillColor: chooseColor(geometry.point.coordinates[2]),
         fillOpacity: 0.5,
+        radius:  setRadius(feature.properties.mag),
+        stroke: true,
         weight: 1.5
       };
-    },
-  })
+    } 
+   });
   // var depth = data.map(data => data.geometry.point.coordinates[2])
   // console.log(depth)
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(mapData.features);
-});
+
 
 function createFeatures(earthquakeData) {
 
