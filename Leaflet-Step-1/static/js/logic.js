@@ -2,80 +2,53 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
 
+// get color from the depth
+// using the mapping-web dat 2 activity 1 basic NYC Boroughs as example
+function chooseColor(depth) {
+  switch(depth){
+  case "0:10":
+    return "green";
+  case "11:20" :
+    return "yellow";
+  case "21:30" :
+    return "red";
+  case "31:50":
+    return "purple";
+  case "51:500":
+    return "gray";
+  }
+}
+
+// get radius from the magnitude 
+
 // Perform a GET request to the query URL
-d3.json(queryUrl).then(function(data) {
-  // Once we get a response, send the data.features object to the createFeatures function
-  data = data
-  console.log(data);
-  createStyle(data);
-  createFeatures(data.features);
-});
-
-// function createFeatures(earthquakeData) {
-function createStyle(data) {
-  
-  depth = data(geometry.point.coordinates[2]);
-  console.log(depth);
-
-  function markerStyle(geometry) {
+d3.json(queryUrl).then(function(mapData) {
+  console.log(mapData);
+  L.geoJson(mapData, {
+    style: function(point) {
       return{
-          opacity: 1,
-          fillOpacity: 0.5,
-        //   get the fill color from the depth (path in the geo json)
-          fillColor: getColor(geometry.point.coordinates[2]),
-          color: "#000000"
-          radius: getRadius(geometry.properties.mag),
-          stroke: true,
-          weight: 0.5
-        }
-      }
-      // set different color from magnitude
-        function getColor(feature.point.coordinates[2]) {
-        switch (true) {
-        case coordinates[2] > 5:
-          return "#ea2c2c";
-        case coordinates[2]> 4:
-          return "#ea822c";
-        case coordinates[2] > 3:
-          return "#ee9c00";
-        case coordinates[2] > 2:
-          return "#eecc00";
-        case coordinates[2] > 1:
-          return "#d4ee00";
-        default:
-          return "#98ee00";
-        }
-      }
-      // set radiuss from magnitude
-        function getRadius(magnitude) {
-        if (magnitude === 0) {
-          return 1;
-        }
-    
-        return magnitude * 4;
-      }
-};
-        // // GeoJSON layer
-        // L.geoJson(data, {
-        //   // Maken cricles
-        //   pointToLayer: function(feature, latlng) {
-        //     return L.circleMarker(latlng);
-        //   },
-        //   // cirecle style
-        //   style: styleInfo,
-
+        color: "white",
+        // call chooseColor function to decide which color to color the marker based on depth)
+        fillColor: chooseColor(point.coordinates[2]),
+        fillOpacity: 0.5,
+        weight: 1.5
+      };
+    },
+  })
+  // var depth = data.map(data => data.geometry.point.coordinates[2])
+  // console.log(depth)
+  // Once we get a response, send the data.features object to the createFeatures function
+  createFeatures(mapData.features);
+});
 
 function createFeatures(earthquakeData) {
 
-    magnitude = data(feature.properties.mag);
-  console.log(magnitude); 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
   }
-  
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
@@ -86,7 +59,6 @@ function createFeatures(earthquakeData) {
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
 }
-
 function createMap(earthquakes) {
 
   // Define streetmap and darkmap layers
