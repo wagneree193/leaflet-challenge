@@ -87,19 +87,21 @@ d3.json(queryUrl).then(function (mapData) {
   // get color from the depth
   // using the mapping-web day 2 activity 1 basic NYC Boroughs as example
   function chooseColor(depth) {
-    return "red";
-    // switch (depth) {
-    //   case depth > 51:
-    //     return "gray"; s
-    //   case "depth":
-    //     return "yellow";
-    //   case "21:30":
-    //     return "red";
-    //   case "31:50":
-    //     return "purple";
-    //   case "51:500":
-    //     return "gray";
-    // }
+  
+    switch (true) {
+      case depth > 51:
+        return "#330033"; 
+      case depth > 41:
+        return "#330066";
+      case depth > 31:
+        return "#330099";
+      case depth > 21:
+        return "#3300CC";
+      case depth > 11:
+        return "#3300FF";
+      default :
+        return "#000000";
+    }
   }
 
   function setRadius(mag) {
