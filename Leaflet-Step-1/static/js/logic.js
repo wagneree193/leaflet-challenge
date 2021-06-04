@@ -2,35 +2,8 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
 
-// get color from the depth
-// using the mapping-web dat 2 activity 1 basic NYC Boroughs as example
-// function chooseColor(depth) {
-//   switch(depth){
-//   case "0:10":
-//     return "green";
-//   case "11:20" :
-//     return "yellow";
-//   case "21:30" :
-//     return "red";
-//   case "31:50":
-//     return "purple";
-//   case "51:500":
-//     return "gray";
-//   }
-// }
 
-// function setRadius(mag) {
-//   // eliminate zero values because we are doing a multiplication operation
-//   if (mag === 0) {
-//     return 1;
-//   }
-
-//   return mag * 3;
-// }
-
-// get radius from the magnitude 
-
-// function createMap(earthquakes) {
+// defining layers first in order to create the mymap the we will then add the points to
 
   // Define streetmap and darkmap layers
   var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -81,9 +54,6 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/signif
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function (mapData) {
   console.log(mapData);
-  // make magnitude variable 
-  // var mag = mapData(feature.properties.mag);
-  // console.log(mag);
   // get color from the depth
   // using the mapping-web day 2 activity 1 basic NYC Boroughs as example
   function chooseColor(depth) {
