@@ -133,8 +133,11 @@ d3.json(queryUrl).then(function (mapData) {
     },
     style: setStyle,
     onEachFeature: function (feature, layer) {
-      layer.bindPopup("<h3>" + feature.properties.place +
-        "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+      layer.bindPopup("Location:" + feature.properties.place + "<br>Date:" + feature.properties.time + "<br>Depth:" +feature.geometry.coordinates[2] + "<br>Magnitude:" + feature.properties.mag);
+      // layer.bindPopup("<h3>" + feature.properties.place +
+      //   "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" 
+      //   "</h3><hr><p>" + "Depth:", feature.geometry.coordinates[2] + "</p>"
+      //   "</h3><hr><p>" + "Magnitude:", feature.properties.mag + "</p>");
     }
   }).addTo(earthquakes);
 
