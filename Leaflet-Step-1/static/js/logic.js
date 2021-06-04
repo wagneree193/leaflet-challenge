@@ -100,7 +100,7 @@ d3.json(queryUrl).then(function (mapData) {
       case depth > 11:
         return "#3300FF";
       default :
-        return "#000000";
+        return "#00FFFF";
     }
   }
 
@@ -120,7 +120,7 @@ d3.json(queryUrl).then(function (mapData) {
       color: "#000000",
       // call chooseColor function to decide which color to color the marker based on depth)
       fillColor: chooseColor(feature.geometry.coordinates[2]),
-      fillOpacity: 0.5,
+      fillOpacity: 0.75,
       radius: setRadius(feature.properties.mag),
       stroke: true,
       weight: 1.5
